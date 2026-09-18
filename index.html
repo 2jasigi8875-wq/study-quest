@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="theme-color" content="#f5ede2">
+<title>콩이와 공부</title>
+<style>
+:root{
+  --bg:#f7f0e6; --card:#fffaf3; --line:#e5d5c0;
+  --brown:#8b5e3c; --dark:#5c3a21; --cream:#f0dfc8;
+  --gold:#e8a33d; --green:#7fa650; --red:#d9694e;
+  --txt:#4a3728; --sub:#9c8672;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;padding:0 0 60px;background:var(--bg);color:var(--txt);
+  font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif}
+
+/* 헤더 */
+.hd{background:linear-gradient(160deg,#a8763f,#8b5e3c);padding:16px 16px 20px;
+  border-radius:0 0 26px 26px;box-shadow:0 4px 14px rgba(139,94,60,.25)}
+.hd h1{margin:0;font-size:19px;color:#fff5e8;letter-spacing:-.5px}
+.hd .dt{color:#f0dfc8;font-size:12px;margin-top:3px}
+
+/* 콩이 */
+.dogbox{text-align:center;padding:14px 0 6px}
+.dog{font-size:64px;line-height:1;display:inline-block;transition:transform .2s}
+.dog.happy{animation:hop .6s ease}
+@keyframes hop{0%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
+.dogname{font-size:14px;font-weight:800;color:#fff5e8;margin-top:4px}
+.bubble{display:inline-block;background:#fffaf3;color:var(--dark);
+  font-size:12px;padding:7px 13px;border-radius:14px;margin-top:8px;max-width:86%;
+  box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.lvbar{height:7px;background:rgba(255,255,255,.25);border-radius:4px;
+  margin:10px 14px 0;overflow:hidden}
+.lvbar i{display:block;height:100%;background:var(--gold);border-radius:4px;transition:width .4s}
+.lvtx{font-size:11px;color:#f0dfc8;margin-top:5px}
+
+/* 보드 */
+.board{display:flex;gap:8px;padding:12px 14px 0}
+.bx{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:10px 4px;text-align:center}
+.bx .n{font-size:22px;font-weight:800;color:var(--brown)}
+.bx .l{font-size:10px;color:var(--sub);margin-top:2px}
+
+/* 카드 */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:14px;margin:12px 14px 0;box-shadow:0 2px 8px rgba(139,94,60,.06)}
+.ttl{font-size:15px;font-weight:800;color:var(--dark);display:flex;
+  align-items:center;justify-content:space-between}
+.sub{font-size:12px;color:var(--sub);line-height:1.6}
+.eq{font-size:10px;background:var(--cream);color:var(--brown);
+  padding:3px 8px;border-radius:8px;font-weight:700}
+
+/* 버튼 */
+.btn{width:100%;background:var(--brown);color:#fff;border:0;border-radius:12px;
+  padding:13px;font-size:14px;font-weight:800;font-family:inherit;margin-top:10px}
+.btn:disabled{background:#d8c8b4;color:#fff}
+.btn.gray{background:var(--cream);color:var(--dark)}
+.btn.gray.on{background:var(--green);color:#fff}
+.btn.tm{background:var(--gold)}
+.btn.sm{padding:9px;font-size:12px}
+
+/* 단어 */
+.w{display:flex;align-items:center;gap:10px;padding:11px 0;
+  border-bottom:1px dashed var(--line)}
+.w:last-child{border-bottom:0}
+.w .en{font-size:16px;font-weight:800;color:var(--dark);flex:1}
+.w .ko{font-size:13px;color:var(--sub);flex:1}
+.w .ck{width:28px;height:28px;border-radius:9px;border:2px solid var(--line);
+  background:transparent;font-size:14px;padding:0;color:transparent}
+.w .ck.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* 달력 */
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ch b{font-size:15px;color:var(--dark)}
+.cn{background:var(--cream);color:var(--dark);border:0;border-radius:9px;
+  width:32px;height:32px;font-size:16px;font-family:inherit}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cd{text-align:center;font-size:10px;color:var(--sub);padding:2px 0}
+.cd.s{color:var(--red)}
+.cc{aspect-ratio:1/1;border-radius:10px;background:#fff;border:1px solid var(--line);
+  color:var(--txt);font-size:12px;font-family:inherit;padding:0;display:flex;
+  flex-direction:column;align-items:center;justify-content:center}
+.cc.e{background:transparent;border:0}
+.cc.f{color:#cbbba6}
+.cc.t{border-color:var(--gold);border-width:2px}
+.cc.sel{background:var(--brown);border-color:var(--brown);color:#fff;font-weight:800}
+.cc.done{background:#e6f0d8;border-color:var(--green)}
+.cc.shield{background:#e8eef7;border-color:#8aa6cc}
+.cc .mk{font-size:8px;height:9px;line-height:1}
+.lg{font-size:10px;color:var(--sub);margin-top:9px;text-align:center;line-height:1.7}
+
+/* 쿠폰 */
+.cp{display:flex;align-items:center;gap:9px;padding:10px 0;
+  border-bottom:1px solid var(--line);font-size:13px}
+.cp:last-child{border-bottom:0}
+.cp span{flex:1}
+.cp button{background:var(--green);color:#fff;border:0;border-radius:8px;
+  padding:6px 11px;font-size:11px;font-weight:700;font-family:inherit}
+.gname{font-size:20px;font-weight:800;color:var(--gold);min-height:30px;
+  text-align:center;margin:8px 0}
+
+/* 기록실 */
+.rc{display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid var(--line)}
+.rc:last-child{border-bottom:0}
+.rc .ic{font-size:20px}
+.rc .nm{flex:1;font-size:13px}
+.rc .vl{font-size:15px;font-weight:800;color:var(--brown)}
+.rc button{background:var(--cream);color:var(--dark);border:0;border-radius:8px;
+  padding:6px 10px;font-size:11px;font-weight:700;font-family:inherit}
+
+/* 도감 */
+.dex{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.dx{aspect-ratio:1/1;border-radius:12px;background:#fff;border:1px solid var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.dx.lock{background:#efe6d9;opacity:.45}
+.dx .em{font-size:24px}
+.dx .nm{font-size:8px;color:var(--sub)}
+
+/* 타이머 */
+#tm{position:fixed;inset:0;background:#f7f0e6;z-index:99;display:none;
+  flex-direction:column;align-items:center;justify-content:center;padding:24px}
+#tm.on{display:flex}
+.tring{width:210px;height:210px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;background:conic-gradient(var(--gold) 0deg,#e5d5c0 0deg)}
+.tin{width:178px;height:178px;border-radius:50%;background:#fffaf3;display:flex;
+  flex-direction:column;align-items:center;justify-content:center}
+.tnum{font-size:46px;font-weight:800;color:var(--brown)}
+.tstep{font-size:13px;color:var(--sub);margin-top:2px}
+.tname{font-size:18px;font-weight:800;margin-top:18px;text-align:center;color:var(--dark)}
+.tcue{font-size:12px;color:var(--sub);margin-top:6px;text-align:center;
+  line-height:1.6;max-width:300px}
+.trow{display:flex;gap:9px;margin-top:22px;width:100%;max-width:320px}
+.trow button{flex:1;padding:13px;border:0;border-radius:12px;font-size:13px;
+  font-weight:800;font-family:inherit;background:var(--cream);color:var(--dark)}
+.trow button.main{background:var(--brown);color:#fff}
+
+details{border-bottom:1px solid var(--line);padding:9px 0}
+details:last-child{border-bottom:0}
+summary{list-style:none;font-size:13px;display:flex;gap:8px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary b{color:var(--brown);font-size:12px;min-width:38px}
+summary span{flex:1}
+summary i{font-size:11px;color:var(--sub);font-style:normal}
+.dt{font-size:12px;color:var(--sub);padding:8px 0 4px;line-height:1.7}
+.dt a{color:var(--brown)}
+.rest{text-align:center;padding:18px 0;font-size:15px;font-weight:700;color:var(--brown)}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <h1>🐾 콩이와 공부</h1>
+  <div class="dt" id="today"></div>
+  <div class="dogbox">
+    <div class="dog" id="dog">🐶</div>
+    <div class="dogname" id="dogname">콩이</div>
+    <div class="bubble" id="bubble">오늘도 같이 해볼까?</div>
+    <div class="lvbar"><i id="lvfill" style="width:0%"></i></div>
+    <div class="lvtx" id="lvtx"></div>
+  </div>
+</div>
+
+<div class="board">
+  <div class="bx"><div class="n" id="best">0</div><div class="l">최고 기록</div></div>
+  <div class="bx"><div class="n" id="streak">0</div><div class="l">연속 일수</div></div>
+  <div class="bx"><div class="n" id="shield">0</div><div class="l">🛡️ 실드</div></div>
+</div>
+
+<div class="card" id="calCard"></div>
+<div class="card" id="gachaCard" style="display:none"></div>
+<div class="card" id="wordCard"></div>
+<div class="card" id="bookCard"></div>
+<div class="card" id="recCard"></div>
+<div class="card" id="dexCard"></div>
+
+<div id="tm">
+  <div class="tring" id="tring"><div class="tin">
+    <div class="tnum" id="tnum">0</div>
+    <div class="tstep" id="tstep"></div>
+  </div></div>
+  <div class="tname" id="tname"></div>
+  <div class="tcue" id="tcue"></div>
+  <div class="trow">
+    <button id="tpause">일시정지</button>
+    <button id="tskip">건너뛰기</button>
+    <button id="texit" class="main">그만</button>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
